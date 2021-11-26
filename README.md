@@ -7,3 +7,6 @@ how it work it need to write all your html code inline which mean only delete wi
 
 
 ![image](https://user-images.githubusercontent.com/55125302/143513181-06a23d77-d508-4556-ab84-d6eda98294d6.png)
+
+# Final
+![image](https://user-images.githubusercontent.com/55125302/143514077-9b746810-30d5-468a-b610-ce98fb7de33d.png)
