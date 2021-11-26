@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html, body{
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+.code-editor {
+  display: block;
+  border: 2px solid gray;
+  background: rgb(40, 44, 52);
+  height: 100%;
+  width: 70%;
+  /* 1time */
+  white-space: initial;
+  color: #e45771a1;
+}
+
+.result {
+  display: block;
+  border: 2px solid gray;
+  background: rgb(250, 250, 250);
+  height: 100%;
+  width: 29%;
+  /* happend with js easy */
+  word-wrap: break-word
+}
+</style>
+<title>Page Title</title>
+</head>
+<body>
+
+<div style="" class="code-editor" id="code_editor" contenteditable="true">
+
+</div>
+<div id="result_cont" class="result"></div>
+<script>
+const delete_backward = "deleteContentBackward";
+const delete_forward = "deleteContentForward";
+const codeEditor = document.querySelector("#code_editor");
+const resultContainer = document.querySelector("#result_cont");
+
+let userwriting = "";
+let purewriting = "";
+let backwordwriting = "";
+let currentpos = 0;
+let shiftEnable = false;
+
+
+
+// continus function heighlet string 
+let stringCounter = 0;
+let stringOn = false;
+// 37 l, 39 r, t 38, b 40
+function deleteBackward(auserwriting){
+  return auserwriting.substring(0, auserwriting.length-2);
+}
+
+function deleteForward(){
+}
+
+// when he click key no mater updown click a ccss noob property lick
+codeEditor.addEventListener("keydown", function(event) {
+return false;
+    if (event.keyCode == 8) {
+       //console.log(userwriting.substring(0, userwriting.length-1));
+       console.log("external plugin", userwriting);
+       userwriting = userwriting.substring(0, userwriting.length-1);
+       resultContainer.innerText = userwriting
+       if (currentpos != 0){
+         currentpos -= 1;
+       }
+       console.log(currentpos);
+       return true;
+    }
+    
+}, false);
+
+
+codeEditor.addEventListener("keydown", function(event) {
+     // ignore list (for now while under bulding I'm not excpect more than 1 char ber key
+     if (event.key == "Control" || event.key == "NumLock" || event.key == "ArrowLeft" ||event.key == "ArrowRight" || event.key == "ArrowUp" || event.key == "ArrowDown" || event.key.length > 1){
+       return false;
+     }
+     
+     if (event.key == "Backspace"){
+       return false;
+     }
+     if (event.key == "Shift"){
+       return false;
+     }
+     
+     if (event.key == "Shift"){
+       return false;
+     }
+     
+     if (event.key == "<" || event.key == ">" || event.key == "/" || event.key == "="){
+       return false;
+     }
+     
+     if (event.key.length == 1){
+       purewriting += event.key;
+     }
+
+      if (event.key == '"' || event.key == "'"){
+        if (stringOn == false) {
+          stringOn = true;
+        } else {
+        stringOn = false;
+        }
+       return false;
+     }
+     
+
+     
+     if (stringOn == false) {
+       userwriting += event.key;
+     }
+     backwordwriting += event.key;
+     codeEditor.innerHTML =userwriting;
+     
+
+
+
+}, false);
+codeEditor.addEventListener("keyup", function(event) {
+
+if (event.key == 'Backspace'){
+  if (codeEditor.innerHTML[codeEditor.innerHTML.length-1] == ">" || codeEditor.innerHTML[codeEditor.innerHTML.length-1] == "<" || codeEditor.innerHTML[codeEditor.innerHTML.length-1] == "/" || codeEditor.innerHTML[codeEditor.innerHTML.length-1] == "'" || 
+codeEditor.innerHTML[codeEditor.innerHTML.length-1] == '"'){
+  
+  let removelastnoobspan = codeEditor.innerHTML.split("<");
+  let x = codeEditor.innerHTML.slice(0, codeEditor.innerHTML.lastIndexOf("<"));
+  userwriting = x.slice(0, x.lastIndexOf("<"));
+  codeEditor.innerHTML = userwriting;
+  purewriting = purewriting.slice(0, purewriting.length-1);
+return false;
+  } else {
+ 
+   userwriting = codeEditor.innerHTML.slice(0, codeEditor.innerHTML.length-1);
+   codeEditor.innerHTML = userwriting;
+   purewriting = purewriting.slice(0, purewriting.length-1);
+   resultContainer.innerHTML = purewriting;
+   return false;
+  }
+
+
+
+  return false;
+}
+
+
+
+if (event.key == "<"){
+  userwriting += "<span style='color:lightgreen;'>&lt;</span>";
+  purewriting += "<";
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+  return false;
+}
+
+if (event.key == ">"){
+  userwriting += "<span style='color:lightgreen;'>&gt;</span>";
+  purewriting += ">";
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+
+if (event.key == "/"){
+  userwriting += "<span style='color:lightgreen;'>&#47;</span>";
+  purewriting += "/";
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+if (event.key == '"'){
+  userwriting += `<span style='color:lightgreen;'>"</span>`;
+  purewriting += '"';
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+  
+  // string helight
+
+  return false;
+}
+
+if (event.key == '='){
+  userwriting += `<span style='color:lightgray;'>=</span>`;
+  purewriting += '=';
+  codeEditor.innerHTML =`${userwriting}`;  
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+
+if (event.key == '"'){
+  userwriting += `<span style='color:lightgreen;'>"</span>`;
+  purewriting += '"';
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+  
+  // string helight
+
+  return false;
+}
+
+
+
+
+if (stringOn == true && event.key.length == 1){
+  userwriting += `<span style='color:lightgreen;'>${event.key}</span>`;
+  purewriting += event.key;
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+     codeEditor.innerHTML = userwriting;
+     resultContainer.innerHTML = purewriting;
+
+
+
+
+     //codeEditor.innerHTML =`<h1>${userwriting}</h1>`;
+     
+}, false);
+
+
+
+codeEditor.addEventListener("keypress", function(event) {
+    // delete letter Backward
+    //console.log(event.keyCode);
+    return false;
+     if (event.key == "Shift"){
+     alert("handled");
+       return false;
+     }
+    event.target.innerHTML =
+    substring(0, event.target.innerText[event.target.innerText.length-1]);
+    
+    //event.target.innerText += event.key;
+    return false;
+    
+    if (event.keyCode == 37) {
+      if (currentpos != 0) {
+       currentpos -= 1;
+      }
+      console.log(currentpos);
+      return true;
+    }
+    
+    if (event.keyCode == 39) {
+      if (currentpos < event.target.innerText.length-1) {
+       currentpos += 1;
+      }
+      console.log(currentpos);
+      return true;
+    }
+    
+    if (event.keyCode == 8) {
+       //console.log(userwriting.substring(0, userwriting.length-1));
+
+       userwriting = userwriting.substring(0, userwriting.length-1);
+       resultContainer.innerText = userwriting
+       if (currentpos != 0){
+         currentpos -= 1;
+       }
+       console.log(currentpos);
+       return true;
+    }
+    console.log(currentpos);
+    
+    if (event.inputType == delete_forward) {
+       //console.log("yes");
+       return true;
+    }
+    if (event.keyCode == 8){
+    }
+    
+    
+    //45 8
+   // console.log(1);
+   if (event.key == "Shift"){
+     return false;
+     
+   }
+   console.log(event);
+    userwriting += event.key;
+    
+resultContainer.innerHTML = userwriting;
+currentpos += 1;
+    
+}, false);
+
+</script>
+
+</body>
+</html>
