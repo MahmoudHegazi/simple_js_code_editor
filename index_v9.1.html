@@ -32,7 +32,7 @@ html, body{
 </head>
 <body>
 
-<div class="code-editor" id="code_editor" contenteditable="true">
+<div style="" class="code-editor" id="code_editor" contenteditable="true">
 
 </div>
 
@@ -81,7 +81,7 @@ codeEditor.addEventListener("keydown", function(event) {
        return false;
      }
      
-     if (event.key == "<" || event.key == ">" || event.key == "/"){
+     if (event.key == "<" || event.key == ">" || event.key == "/" || event.key == '"' || event.key == "'" || event.key == "="){
        return false;
      }
      userwriting += event.key;
@@ -122,6 +122,36 @@ if (event.key == "/"){
 
   return false;
 }
+
+if (event.key == '"'){
+  userwriting += `<span style='color:lightgreen;'>"</span>`;
+  purewriting += '"';
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+if (event.key == '='){
+  userwriting += `<span style='color:lightgray;'>=</span>`;
+  purewriting += '=';
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+
+if (event.key == "'"){
+  userwriting += `<span style='color:lightgreen;'>'</span>`;
+  purewriting += "'";
+  codeEditor.innerHTML =`${userwriting}`;
+  resultContainer.innerHTML = purewriting;
+
+  return false;
+}
+
+
 
      codeEditor.innerHTML =`${userwriting}`;
      resultContainer.innerHTML = purewriting;
